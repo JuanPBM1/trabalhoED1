@@ -37,7 +37,34 @@ void remover(head * list, string nomePet){
     }
 }
 
-/*void pesquisar(head * list, int tipoDePesquisa,string nomePet = "", string nomeDono = ""){
+void pesquisarPet(head * list,string nomePet){
+    pet *aux = list->comeco;
+
+    while(aux!=nullptr && aux->nomePet!=nomePet){
+        aux=aux->prox;
+    }
+    if(aux->nomePet==nomePet){
+        //print do nome do pet
+    }
+    else{
+        //print que não foi encontrado
+    }
+}
+void pesquisarDono(head * list, string nomeDono){
+    pet *aux = list->comeco;
+
+    while(aux != nullptr && aux->nomeDono != nomeDono){
+        aux = aux->prox;
+    }
+    if(aux->nomeDono==nomeDono){
+        //print nome do dono
+    }
+    else{
+        //print que não foi encontrado
+    }
+}
+
+/**void pesquisar(head * list, int tipoDePesquisa,string nomePet, string nomeDono){
 
     pet *aux = list->comeco;
 

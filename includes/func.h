@@ -21,5 +21,9 @@ void adicionar(head * list,string nomePet,string nomeDono,string tipo, string se
 
 void remover(head * list, string nome);
 
+void pesquisarPet(head * list,string nomePet);
+
+void pesquisarDono(head * list, string nomeDono);
+
 //void pesquisar(head * list, int tipoDePesquisa,string nomePet = "", string nomeDono = "");
 
