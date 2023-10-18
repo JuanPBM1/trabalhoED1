@@ -1,5 +1,14 @@
 #include "func.h"
 
+void gArquivo(){
+    //Lê o arquivo e coloca na memória;se não tiver nada, cria arquivo
+    ifstream MyReadFile("dados.csv");
+    
+    //Cria arquivo
+    //Salva o arquivo
+    
+}
+
 void adicionar(head * list,string nomePet,string nomeDono,string tipo, string sexo, int idade){
     pet* novo = new pet; //Aloca a memória
     novo -> nomePet = nomePet; //Inicializa cada valor da struct

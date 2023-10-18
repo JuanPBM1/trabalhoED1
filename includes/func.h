@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstring>
+#include <fstream>
+
  using namespace std;
 
 
@@ -16,6 +18,8 @@ struct head{
     int cont;
     pet* comeco;
 };
+
+void gArquivo();
 
 void adicionar(head * list,string nomePet,string nomeDono,string tipo, string sexo, int idade);
 
