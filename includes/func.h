@@ -1,11 +1,16 @@
 #include <iostream>
 #include <cstring>
 #include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+
 
  using namespace std;
 
 
 struct pet{
+    int matricula;
     string nomePet;
     string nomeDono;
     string tipo;
@@ -19,15 +24,17 @@ struct head{
     pet* comeco;
 };
 
-void gArquivo();
+void lerArquivo(head list);
 
-void adicionar(head * list,string nomePet,string nomeDono,string tipo, string sexo, int idade);
+void salvarArquivo(head *list);
 
-void remover(head * list, string nome);
+void adicionar(head* list, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade);
 
-void pesquisarPet(head * list,string nomePet);
+void remover(head * list, int matricula);
 
-void pesquisarDono(head * list, string nomeDono);
+void pesquisarMatricula(head * list, int matricula);
+
+void pesquisarDono(head * list, int nomeDono);
 
 //void pesquisar(head * list, int tipoDePesquisa,string nomePet = "", string nomeDono = "");
 
