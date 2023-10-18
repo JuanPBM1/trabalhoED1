@@ -88,16 +88,15 @@ pet* pesquisarDono(head * list, string nomeDono){
     }
 }
 
- void lerArquivo(head *list){ // Não coloquei um ponteiro da lista como argumento, pois quando usamos a funcao adicionar ja tera um ponteiro apotando para lista
-        string temp, linhaTexto, dado;
-        vector<string> vet;
-        int teste, aux0, aux5;
-
-        ifstream MyReadFile("filename.csv");
+void lerArquivo(head *list){ // Não coloquei um ponteiro da lista como argumento, pois quando usamos a funcao adicionar ja tera um ponteiro apotando para lista
+    string temp, linhaTexto, dado;
+    vector<string> vet;
+    int teste, aux0, aux5;
+    
+    ifstream MyReadFile("filename.csv");
     if (!MyReadFile.is_open()) {
         cerr << "Erro ao abrir o arquivo." << endl;
     }
-
     while (getline(MyReadFile, linhaTexto)) { //aqui o programa pega a linha até o \n no arquivo e armazena em linha texto
         stringstream s(linhaTexto); //fazemos linhatexto virar uma stream de dados
         while (getline(s, dado, ',')) { //pega os dados até a vírgula, separando-os
@@ -119,7 +118,7 @@ pet* pesquisarDono(head * list, string nomeDono){
         }
         vet.clear(); 
 }
- }
+}
 
 void salvarArquivo(head *list){
     pet *copia = list->comeco;

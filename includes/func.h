@@ -28,7 +28,7 @@ void printarLista(head *lista);
 
 void alterar(pet *atual, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade);
 
-void lerArquivo(head list);
+void lerArquivo(head *list);
 
 void salvarArquivo(head *list);
 

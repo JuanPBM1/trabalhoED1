@@ -5,8 +5,8 @@ int main(){
     head lista;
     lista.comeco=nullptr;
     lista.cont=0;
-   
-    lerArquivo(lista);
+
+    lerArquivo(&lista);
     int opcao;
     pet *aux;
 
