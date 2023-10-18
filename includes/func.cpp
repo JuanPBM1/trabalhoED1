@@ -17,6 +17,15 @@ void adicionar(head* list, int matricula, string nomePet, string nomeDono, strin
     list->cont++;
 }
 
+void alterar(pet *atual, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade){
+    atual->matricula =  matricula;
+    atual->nomePet = nomePet;
+    atual->nomeDono = nomeDono;
+    atual->tipo = tipo;
+    atual->sexo = sexo;
+    atual->idade = idade;
+}
+
 void remover(head * list, int matricula){
     pet * primeiro = list->comeco;
     pet * aux = nullptr;
@@ -40,35 +49,46 @@ void remover(head * list, int matricula){
     }
 }
 
-void pesquisarMatricula(head * list, int matricula){
-    pet *aux = list->comeco;
+void printarLista(head *lista){ //deixar a saida mais estetica
+    pet *aux = lista->comeco;
 
-    while(aux!=nullptr && aux->matricula!=matricula){
-        aux=aux->prox;
-    }
-    if(aux->matricula==matricula){
-        //print do nome do pet
-    }
-    else{
-        //print que não foi encontrado
-    }
-}
-
-void pesquisarDono(head * list, string nomeDono){
-    pet *aux = list->comeco;
-
-    while(aux != nullptr && aux->nomeDono != nomeDono){
+    cout << "Pets cadastrados: " << lista->cont <<endl<<endl;
+    while(aux != nullptr){
+        cout << aux->matricula << ", " << aux->nomePet << ", " << aux->nomeDono << ", " << aux->tipo << ", " << aux->sexo << ", " << aux->idade <<endl;
         aux = aux->prox;
     }
-    if(aux->nomeDono==nomeDono){
-        //print nome do dono
+
+}
+
+pet* pesquisarMatricula(head* list, int matricula) {
+    pet* aux = list->comeco;
+
+    while (aux != nullptr && aux->matricula != matricula) {
+        aux = aux->prox;
     }
-    else{
-        //print que não foi encontrado
+    
+    if (aux != nullptr && aux->matricula == matricula) {
+        return aux; // Matrícula encontrada, retorna o ponteiro para o pet
+    } else {
+        return nullptr; // Matrícula não encontrada, retorna nullptr
     }
 }
 
- void lerArquivo(head list){ // Não coloquei um ponteiro da lista como argumento, pois quando usamos a funcao adicionar ja tera um ponteiro apotando para lista
+pet* pesquisarDono(head * list, string nomeDono){
+    pet *aux = list->comeco;
+
+    while (aux != nullptr && aux->nomeDono != nomeDono) {
+        aux = aux->prox;
+    }
+    
+    if (aux != nullptr && aux->nomeDono == nomeDono) {
+        return aux; // Matrícula encontrada, retorna o ponteiro para o pet
+    } else {
+        return nullptr; // Matrícula não encontrada, retorna nullptr
+    }
+}
+
+ void lerArquivo(head *list){ // Não coloquei um ponteiro da lista como argumento, pois quando usamos a funcao adicionar ja tera um ponteiro apotando para lista
         string temp, linhaTexto, dado;
         vector<string> vet;
         int teste, aux0, aux5;
@@ -93,7 +113,7 @@ void pesquisarDono(head * list, string nomeDono){
                 aux0 = 0;
                 aux5 = 5;
             }
-            adicionar(&list, aux0, vet[1], vet[2], vet[3], vet[4], aux5);
+            adicionar(list, aux0, vet[1], vet[2], vet[3], vet[4], aux5);
         } else {
             cerr << "Dados insuficientes na linha: " << linhaTexto << endl;
         }
@@ -101,7 +121,7 @@ void pesquisarDono(head * list, string nomeDono){
 }
  }
 
-void salvarArquivo(head *list) {
+void salvarArquivo(head *list){
     pet *copia = list->comeco;
     
     ofstream MyFile("filename.csv");
@@ -119,33 +139,16 @@ void salvarArquivo(head *list) {
     MyFile.close();
 }
 
+void limparLista(head *lista){
+    pet *primeiro = lista->comeco, *aux;
 
-
-/**void pesquisar(head * list, int tipoDePesquisa,string nomePet, string nomeDono){
-
-    pet *aux = list->comeco;
-
-    if(tipoDePesquisa == 1){ // 1 é o nome do pet
-        while(aux != nullptr && aux->nomePet != nomePet){
-            aux = aux->prox;
-        }
-        if(aux->nomePet==nomePet){
-            //print do nome do pet
-        }
-        else{
-            //print que não foi encontrado
-        }
+    while(primeiro != nullptr){
+        aux = primeiro;
+        primeiro = primeiro->prox;
+        delete(aux);
     }
-    else if(tipoDePesquisa == 2){ // 2 é o nome do dono
-        while(aux != nullptr && aux->nomeDono != nomeDono){
-            aux = aux->prox;
-        }
-        if(aux->nomeDono==nomeDono){
-            //print do nome do dono
-        }
-        else{
-            //print que não foi encontrado
-        }
-    }
+    lista->comeco = nullptr; 
 }
-*/
+
+
+
