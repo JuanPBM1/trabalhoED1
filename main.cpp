@@ -20,7 +20,7 @@ int main(){
         cout << "[1] - Cadastrar Pet" <<endl;
         cout << "[2] - Alterar Cadastro" <<endl;
         cout << "[3] - Excluir Cadastro" <<endl;
-        cout << "[4] - Imprimir Listagem" <<endl;
+        cout << "[4] - Listar Todos os Pets" <<endl;
         cout << "[5] - Buscar P/ Matricula" <<endl;
         cout << "[6] - Buscar P/ Nome do Dono" <<endl;
         cout << "[7] - Ordernar 1" <<endl;
@@ -51,10 +51,11 @@ int main(){
             cout << endl<< "Digite o tipo do Pet: ";
             getline(cin,tipo);
             cout << endl<< "Digite o sexo do Pet: ";
-            cin >> sexo;
-            cout << endl<< "Digite a idade do Pet: ";
+            getline(cin,sexo);
+            cout << endl<< "Digite a idade do Pet (em meses): ";
             cin >> idade;
             adicionar(&lista, matricula, cxAlta(nomePet), cxAlta(nomeDono), cxAlta(tipo), cxAlta(sexo), idade);
+            salvarArquivo(&lista);
             cout<<endl<<endl<<"O Pet foi cadastrado com sucesso!";
             limparConsole();
             break;
@@ -66,7 +67,9 @@ int main(){
             system("clear");
             
             aux = pesquisarMatricula(&lista, matricula); //Pesquisa a matricula e armazena o ponteiro para a struct da matricula
-            if (aux->matricula == matricula) {
+            if(aux==nullptr)
+                cout << "Pet não encontrado" <<endl;
+            else if (aux->matricula == matricula) { //tá dando erro de segmentação porque quando nullptr é retornado, o if tenta acessar a matrícula de nullptr, o que causa um acesso à memória indevido
                 char conf;
                 cout<<"Deseja manter o ID antigo? (S/N): ";
                 cin>>conf;
@@ -83,21 +86,19 @@ int main(){
                     }
                 
                 getline(cin,nomePet);
-                cout << "Digite o novo nome do Pet: " <<endl<<endl;
+                cout << "Digite o novo nome do Pet: " <<endl;
                 getline(cin,nomePet);
-                cout << "Digite o novo nome do dono do Pet " <<endl<<endl;
+                cout << "Digite o novo nome do dono do Pet " <<endl;
                 getline(cin,nomeDono);
-                cout << "Digite o novo tipo do Pet: " <<endl<<endl;
+                cout << "Digite o novo tipo do Pet: " <<endl;
                 getline(cin,tipo);
-                cout << "Digite o novo sexo do Pet: " <<endl<<endl;
-                cin >> sexo;
-                cout << "Digite a nova idade do Pet: " <<endl<<endl;
+                cout << "Digite o novo sexo do Pet: " <<endl;
+                getline(cin,sexo);
+                cout << "Digite a nova idade do Pet (em meses): " <<endl;
                 cin >> idade;
-                alterar(aux,matricula, nomePet, nomeDono, tipo, sexo, idade);
+                alterar(aux, matricula, cxAlta(nomePet), cxAlta(nomeDono), cxAlta(tipo), cxAlta(sexo), idade);
+                salvarArquivo(&lista);
                 cout<<"O Pet foi cadastrado com sucesso!";
-            }
-            else {
-                cout << "Pet não encontrado" <<endl;
             }
             limparConsole();
             break;
@@ -105,7 +106,11 @@ int main(){
         case 3: // Excluir com base na matricula
             cout << endl<< "Digite o ID do Pet em que deseja Excluir Cadastro: " <<endl;
             cin >> matricula;
-            remover(&lista, matricula);
+            if(pesquisarMatricula(&lista,matricula)!=nullptr)
+                remover(&lista, matricula);
+            else{
+                cout<<"A matrícula informada não consta na lista!";
+            }
             limparConsole();
             break;
         
@@ -133,7 +138,7 @@ int main(){
             cout<<"Digite o nome do dono do pet que deseja procurar: ";
             getline(cin,nomeDono); //getline para evitar o estouro de buffer (entrada do tipo int indo para tipo string)
             getline(cin,nomeDono);
-            aux = pesquisarDono(&lista, nomeDono);
+            aux = pesquisarDono(&lista, cxAlta(nomeDono));
             if (aux){
                 imprimir(aux);
             }
@@ -143,8 +148,13 @@ int main(){
             limparConsole();
             break;
        
-        case 7: 
-            // ordernar1
+        case 7: //ordenação por BubbleSort
+            system("clear");
+            if(lista.comeco!=nullptr)
+                bubbleSort(&lista);
+            else
+                cout<<"A lista está vazia!";
+            limparConsole();
             break;
         
         case 8:
@@ -159,8 +169,8 @@ int main(){
             char c;
             cout<<"Tem certeza que deseja limpar toda a base de dados (ação irreversível!)? (S/N): ";
             cin>>c;
-            toupper(c);
-            if (c=='S')
+            c=toupper(c);
+            if (c=='S'&&lista.comeco!=nullptr)
                 limparLista(&lista);
             limparConsole();
             break;

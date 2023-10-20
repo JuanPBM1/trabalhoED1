@@ -32,6 +32,9 @@ void remover(head * list, int matricula){
         aux = list->comeco; //Guarda o elemento que será deletado
         list->comeco = aux->prox; //Excluir o primeiro pet e torna o segundo o primeiro
     }
+    else if (list->cont == 0){
+        cout<< "Não há Pets para excluir!";
+    }
     else{
         while(primeiro != nullptr && primeiro->prox != nullptr && primeiro->prox->matricula==matricula){ // Excluir pets ao longo da lista
             primeiro = primeiro -> prox; // busca sequencial
@@ -41,11 +44,46 @@ void remover(head * list, int matricula){
             primeiro -> prox = aux->prox; //Faz a costura da lista, ex: se vamos excluir 2º pet em uma lista com 3 pets, o 3º Pet passara a ser o segundo
         }
     }
+    
     if(aux){ //Se aux não é nulo
         delete aux;
         list->cont--;
+        cout<<"Pet com ID "<<matricula<<" foi removido!";
     }
 }
+
+/*int remover(head *list, int matricula){
+    pet *primeiro = list->comeco; //guarda o começo da lista (primeiro elemento)
+    pet *aux=nullptr; //guardará o elemento que será deletado
+
+    if(primeiro != nullptr && list->comeco->matricula == matricula){ //se o primeiro for o que procuramos
+        aux=primeiro;
+        primeiro=aux->prox;
+    }
+    else if(list->cont=0){ //se a lista é nula
+        cout<<"Não há Pets para excluir!"<<endl;
+        return -1;
+    }
+    else{
+        while(primeiro!=nullptr && primeiro->prox != nullptr && primeiro->prox->matricula==matricula){ //percorre a lista procurando o pet
+            primeiro=primeiro->prox;
+        }
+        if(primeiro->prox->matricula==matricula){ //se encontrar
+            aux = primeiro -> prox; //o próximo do primeiro é guardado para ser deletado
+            primeiro -> prox = aux->prox; //primeiro apontará para null
+        }
+        else{
+            cout<<"A matrícula fornecida não consta na lista!"<<endl;
+            return -2;
+        }
+    }
+    if(aux){ //se aux não é nulo, ele é deletado
+        delete aux;
+        list->cont--;
+        return 0;
+    }
+    return 1;
+}*/
 
 void imprimir(pet *elemento){ //padronização das saídas
     cout<<"----------Pet "<<elemento->matricula<<"----------"<<endl;
@@ -87,7 +125,7 @@ pet* pesquisarMatricula(head* list, int matricula) {
     if (aux != nullptr && aux->matricula == matricula) {
         return aux; // Matrícula encontrada, retorna o ponteiro para o pet
     } else {
-        return nullptr; // Matrícula não encontrada, retorna nullptr
+        return aux; // Matrícula não encontrada, retorna nullptr
     }
 }
 
@@ -110,7 +148,7 @@ void lerArquivo(head *list){ // Não coloquei um ponteiro da lista como argument
     vector<string> vet;
     int teste, aux0, aux5;
 
-    ifstream MyReadFile("filename.csv");
+    ifstream MyReadFile("pet_data.csv");
     if (!MyReadFile.is_open()) {
         cerr << "Erro ao abrir o arquivo." << endl;
     }
@@ -140,7 +178,7 @@ void lerArquivo(head *list){ // Não coloquei um ponteiro da lista como argument
 void salvarArquivo(head *list){
     pet *copia = list->comeco;
     
-    ofstream MyFile("filename.csv");
+    ofstream MyFile("pet_data.csv");
     if (!MyFile.is_open()) {
         cerr << "Erro ao abrir o arquivo." << endl;
         return;
@@ -181,4 +219,56 @@ int matDisponivel(head *lista,int matricula){
     else
         return 1; //Quando acha uma matrícula igual
     
+}
+
+void trocarDados(pet *p1, pet *p2){
+    if(p1 != nullptr && p2 != nullptr){
+    
+    int matricula=p1->matricula;
+    string nomePet=p1->nomePet;
+    string nomeDono=p1->nomeDono;
+    string tipo=p1->tipo;
+    string sexo=p1->sexo;
+    int idade=p1->idade;
+
+    p1->matricula=p2->matricula;
+    p1->nomePet=p2->nomePet;
+    p1->nomeDono=p2->nomeDono;
+    p1->tipo=p2->tipo;
+    p1->sexo=p2->sexo;
+    p1->idade=p2->idade;
+
+    p2->matricula=matricula;
+    p2->nomePet=nomePet;
+    p2->nomeDono=nomeDono;
+    p2->tipo=tipo;
+    p2->sexo=sexo;
+    p2->idade=idade;
+    }
+    else{
+        cout<<"ERRO! PONTEIROS NULOS!";
+    }
+}
+
+void bubbleSort(head *list) {
+    int tamanho = list->cont;
+    bool ordenado = false;
+    pet *primeiro = list->comeco;
+
+    if (list != nullptr) {
+        while (!ordenado) {
+            ordenado = true;
+            primeiro = list->comeco;
+            while (primeiro->prox != nullptr) {
+                if ((primeiro->matricula) > (primeiro->prox->matricula)) {
+                    ordenado = false;
+                    trocarDados(primeiro, primeiro->prox);
+                }
+                primeiro = primeiro->prox;
+            }
+        }
+        cout<<endl<<"A lista foi organizada em ordem crescente de ID com sucesso.";
+    } else {
+        cout << endl << "A lista está vazia!" << endl;
+    }
 }
