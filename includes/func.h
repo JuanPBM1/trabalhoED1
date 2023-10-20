@@ -39,8 +39,9 @@ void salvarArquivo(head *list);
 
 void adicionar(head* list, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade);
 
+int adicionarFinal(head* list, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade);
+
 void remover(head * list, int matricula);
-//int remover(head *list,int matricula);
 
 pet* pesquisarMatricula(head* list, int matricula);
 

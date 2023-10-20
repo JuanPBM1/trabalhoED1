@@ -23,6 +23,41 @@ void adicionar(head* list, int matricula, string nomePet, string nomeDono, strin
     list->cont++;
 }
 
+/* (adicionar depois) int verificarVazio() { 
+    if (list==nullptr) {
+        cout << "Não existe lista para iniciar o programa. Reinicie o programa!";
+        return 0;
+    }
+
+}*/
+
+int adicionarFinal(head* list, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade){
+    pet *novo = new pet; 
+    pet *aux;
+    novo->matricula = matricula;
+    novo->nomePet = nomePet;
+    novo->nomeDono = nomeDono;
+    novo->tipo = tipo;
+    novo->sexo = sexo;
+    novo->idade = idade;
+    novo->prox = nullptr;
+    
+    if(list->comeco==nullptr)
+        list->comeco = novo;
+    else{
+        aux=list->comeco;
+        while(aux->prox!=nullptr)
+            aux=aux->prox;
+        aux->prox=novo;
+    }
+    list->cont++;
+    return 1;
+
+}
+
+//Função do tipo: Procedimento
+//Descrição: esta funcaofjdksojf
+//Complexidade de tempo: O(N)
 void alterar(pet *atual, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade){
     atual->matricula =  matricula;
     atual->nomePet = nomePet;
@@ -143,7 +178,7 @@ void lerArquivo(head *list){ // Não coloquei um ponteiro da lista como argument
                 aux0 = 0;
                 aux5 = 5;
             }
-            adicionar(list, aux0, vet[1], vet[2], vet[3], vet[4], aux5);
+            adicionarFinal(list, aux0, vet[1], vet[2], vet[3], vet[4], aux5);
         } else {
             cerr << "Dados insuficientes na linha: " << linhaTexto << endl;
         }
