@@ -9,6 +9,7 @@ int main(){
     lerArquivo(&lista);
     int opcao;
     pet *aux;
+    const char *OS = returnOS();
 
     int matricula, idade;
     string nomePet, nomeDono, tipo, sexo;
@@ -30,7 +31,7 @@ int main(){
         
         cout << "Digite uma opção: ";
         cin >> opcao;
-        system("clear");
+        system(OS);
         switch (opcao)
         {
         case 1: // Inserir lista
@@ -61,47 +62,17 @@ int main(){
             break;
        
         case 2: // Alterar Cadastro com base na matricula
-            cout << endl<< "Digite o ID do Pet em que deseja Alterar Cadastro: " <<endl;
+            cout << endl<< "Digite o ID do Pet que terá o cadastro alterado: " <<endl;
             cin >> matricula;
             cout <<endl;
             system("clear");
-            
+
             aux = pesquisarMatricula(&lista, matricula); //Pesquisa a matricula e armazena o ponteiro para a struct da matricula
-            if(aux==nullptr)
-                cout << "Pet não encontrado" <<endl;
-            else if (aux->matricula == matricula) { //tá dando erro de segmentação porque quando nullptr é retornado, o if tenta acessar a matrícula de nullptr, o que causa um acesso à memória indevido
-                char conf;
-                cout<<"Deseja manter o ID antigo? (S/N): ";
-                cin>>conf;
-                conf=toupper(conf);
-                if(conf=='N'){ //Tratamento de erro para o usuário não digitar uma matrícula existente
-                    cout << "Digite o novo ID do Pet: ";
-                    do{
-                       cin >> matricula;
-                        if(matDisponivel(&lista,matricula)==1){
-                            cout<<"Essa matrícula já está em uso, digite outra!"<<endl<<endl;
-                            limparConsole();}
-                        cout<<"Digite o novo ID do Pet: ";
-                    }while(matDisponivel(&lista,matricula)==1);
-                    }
-                
-                getline(cin,nomePet);
-                cout << "Digite o novo nome do Pet: " <<endl;
-                getline(cin,nomePet);
-                cout << "Digite o novo nome do dono do Pet " <<endl;
-                getline(cin,nomeDono);
-                cout << "Digite o novo tipo do Pet: " <<endl;
-                getline(cin,tipo);
-                cout << "Digite o novo sexo do Pet: " <<endl;
-                getline(cin,sexo);
-                cout << "Digite a nova idade do Pet (em meses): " <<endl;
-                cin >> idade;
-                alterar(aux, matricula, cxAlta(nomePet), cxAlta(nomeDono), cxAlta(tipo), cxAlta(sexo), idade);
-                salvarArquivo(&lista);
-                cout<<"O Pet foi cadastrado com sucesso!";
-            }
-            limparConsole();
-            break;
+            alterar(aux, matricula, lista);
+            salvarArquivo(&lista);
+
+        limparConsole();
+        break;
        
         case 3: // Excluir com base na matricula
             cout << endl<< "Digite o ID do Pet em que deseja Excluir Cadastro: " <<endl;
@@ -149,7 +120,7 @@ int main(){
             break;
        
         case 7: //ordenação por BubbleSort
-            system("clear");
+            system(OS);
             if(lista.comeco!=nullptr)
                 bubbleSort(&lista);
             else

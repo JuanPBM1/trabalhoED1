@@ -8,6 +8,7 @@
 
  using namespace std;
 
+const char *returnOS();
 
 struct pet{
     int matricula;
@@ -54,3 +55,5 @@ int matDisponivel(head *lista,int matricula);
 void trocarDados(pet *p1, pet *p2);
 
 void bubbleSort(head *list);
+
+void alterar(pet *atual, int matricula, head lista);

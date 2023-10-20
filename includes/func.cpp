@@ -1,5 +1,13 @@
 #include "func.h"
 
+const char *returnOS() { 
+    #ifdef _WIN32 
+         return "cls";  
+     #else 
+         return "clear"; 
+     #endif 
+ } 
+
 void adicionar(head* list, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade) {
     pet* novo = new pet;
     novo->matricula = matricula;
@@ -52,39 +60,6 @@ void remover(head * list, int matricula){
     }
 }
 
-/*int remover(head *list, int matricula){
-    pet *primeiro = list->comeco; //guarda o começo da lista (primeiro elemento)
-    pet *aux=nullptr; //guardará o elemento que será deletado
-
-    if(primeiro != nullptr && list->comeco->matricula == matricula){ //se o primeiro for o que procuramos
-        aux=primeiro;
-        primeiro=aux->prox;
-    }
-    else if(list->cont=0){ //se a lista é nula
-        cout<<"Não há Pets para excluir!"<<endl;
-        return -1;
-    }
-    else{
-        while(primeiro!=nullptr && primeiro->prox != nullptr && primeiro->prox->matricula==matricula){ //percorre a lista procurando o pet
-            primeiro=primeiro->prox;
-        }
-        if(primeiro->prox->matricula==matricula){ //se encontrar
-            aux = primeiro -> prox; //o próximo do primeiro é guardado para ser deletado
-            primeiro -> prox = aux->prox; //primeiro apontará para null
-        }
-        else{
-            cout<<"A matrícula fornecida não consta na lista!"<<endl;
-            return -2;
-        }
-    }
-    if(aux){ //se aux não é nulo, ele é deletado
-        delete aux;
-        list->cont--;
-        return 0;
-    }
-    return 1;
-}*/
-
 void imprimir(pet *elemento){ //padronização das saídas
     cout<<"----------Pet "<<elemento->matricula<<"----------"<<endl;
     cout<<"------------------------------"<<endl;
@@ -98,10 +73,11 @@ void imprimir(pet *elemento){ //padronização das saídas
 }
 
 void limparConsole(){
+    const char *OS = returnOS();
     string confirm;
     cout<<endl<<"Digite \"OK\" para continuar...";
     cin>>confirm;
-    system("clear");
+    system(OS);
 }
 
 void printarLista(head *lista){ //printa a lista inteira
@@ -270,5 +246,89 @@ void bubbleSort(head *list) {
         cout<<endl<<"A lista foi organizada em ordem crescente de ID com sucesso.";
     } else {
         cout << endl << "A lista está vazia!" << endl;
+    }
+}
+
+void alterar(pet *atual, int matricula, head lista)
+{
+
+    int matricula2, idade2, opcao;
+    string nomePet2, nomeDono2, tipo2, sexo2;
+
+    if(atual==nullptr)
+        cout << "Pet não encontrado" <<endl;
+    else if (atual->matricula == matricula)
+    {
+        cout<< "Deseja alterar qual campo abaixo: "<<endl;
+        cout<< "[1] - ID" <<endl;
+        cout<< "[2] - Nome do Pet" <<endl;
+        cout<< "[3] - Nome do Dono" <<endl;
+        cout<< "[4] - Tipo" <<endl;
+        cout<< "[5] - Sexo" <<endl;
+        cout<< "[6] - Idade" <<endl;
+        cin>> opcao;
+
+        switch (opcao)
+        {
+        case 1:
+            do
+            {
+                cout<<"Digite o novo ID do Pet: ";
+                cin >> matricula2;
+                if(matDisponivel(&lista,matricula2)==1)
+                {
+                    cout<<"Essa matrícula já está em uso, digite outra!"<<endl<<endl;
+                    limparConsole();
+                }
+                
+            }
+            while(matDisponivel(&lista,matricula2)==1);
+            atual->matricula =  matricula2;
+            "O cadastro do Pet foi alterado com sucesso!";
+            break;
+
+        case 2:
+            cout << endl<<"Digite o novo nome do Pet: ";
+            getline(cin,nomePet2);
+            getline(cin,nomePet2);
+            atual->nomePet = cxAlta(nomePet2);
+            "O cadastro do Pet foi alterado com sucesso!";
+            break;
+
+        case 3:
+            cout << endl<< "Digite o nome do dono do Pet: ";
+            getline(cin,nomeDono2);
+            getline(cin,nomeDono2);
+            atual->nomeDono = cxAlta(nomeDono2);
+            "O cadastro do Pet foi alterado com sucesso!";
+            break;
+
+        case 4:
+            cout << "Digite o novo tipo do Pet: " <<endl;
+            getline(cin,tipo2);
+            getline(cin,tipo2);
+            atual->tipo = cxAlta(tipo2);
+            "O cadastro do Pet foi alterado com sucesso!";
+            break;
+
+        case 5:
+            cout << endl<< "Digite o sexo do Pet: ";
+            getline(cin,sexo2);
+            getline(cin,sexo2);
+            atual->sexo = cxAlta(sexo2);
+            "O cadastro do Pet foi alterado com sucesso!";
+            break;
+
+        case 6:
+            cout << endl<< "Digite a idade do Pet (em meses): ";
+            cin >> idade2;
+            atual->idade = idade2;
+            cout<<"O cadastro do Pet foi alterado com sucesso!";
+            break;
+
+        default:
+            cout << "Dígito Inválido!" <<endl;
+            break;
+        }
     }
 }
