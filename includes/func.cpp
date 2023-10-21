@@ -23,13 +23,6 @@ void adicionar(head* list, int matricula, string nomePet, string nomeDono, strin
     list->cont++;
 }
 
-/* (adicionar depois) int verificarVazio() { 
-    if (list==nullptr) {
-        cout << "Não existe lista para iniciar o programa. Reinicie o programa!";
-        return 0;
-    }
-
-}*/
 
 int adicionarFinal(head* list, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade){
     pet *novo = new pet; 
@@ -55,9 +48,6 @@ int adicionarFinal(head* list, int matricula, string nomePet, string nomeDono, s
 
 }
 
-//Função do tipo: Procedimento
-//Descrição: esta funcaofjdksojf
-//Complexidade de tempo: O(N)
 void alterar(pet *atual, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade){
     atual->matricula =  matricula;
     atual->nomePet = nomePet;
@@ -157,12 +147,13 @@ pet* pesquisarDono(head * list, string nomeDono){
 void lerArquivo(head *list){ // Não coloquei um ponteiro da lista como argumento, pois quando usamos a funcao adicionar ja tera um ponteiro apotando para lista
     string temp, linhaTexto, dado;
     vector<string> vet;
-    int teste, aux0, aux5;
+    int contExec = 0, aux0, aux5;
 
     ifstream MyReadFile("pet_data.csv");
-    if (!MyReadFile.is_open()) {
+    if (!MyReadFile.is_open() && contExec < 0) {
         cerr << "Erro ao abrir o arquivo." << endl;
     }
+    contExec++;
     while (getline(MyReadFile, linhaTexto)) { //aqui o programa pega a linha até o \n no arquivo e armazena em linha texto
         stringstream s(linhaTexto); //fazemos linhatexto virar uma stream de dados
         while (getline(s, dado, ',')) { //pega os dados até a vírgula, separando-os
