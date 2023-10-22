@@ -7,7 +7,7 @@ int main(){
     lista.cont=0;
 
     lerArquivo(&lista);
-    int opcao;
+    int opcao, selec;
     pet *aux;
     const char *OS = returnOS();
 
@@ -24,10 +24,9 @@ int main(){
         cout << "[4] - Listar Todos os Pets" <<endl;
         cout << "[5] - Buscar P/ Matricula" <<endl;
         cout << "[6] - Buscar P/ Nome do Dono" <<endl;
-        cout << "[7] - Ordernar 1" <<endl;
-        cout << "[8] - Ordernar 2" <<endl;
-        cout << "[9] - Salvar e sair" <<endl;
-        cout << "[10] - Formatar Sistema Cadastral" <<endl;
+        cout << "[7] - Ordernar" <<endl;
+        cout << "[8] - Salvar e sair" <<endl;
+        cout << "[9] - Formatar Sistema Cadastral" <<endl;
         
         cout << "Digite uma opção: ";
         cin >> opcao;
@@ -90,16 +89,27 @@ int main(){
             printarLista(&lista);
             break;
         
-        case 5: //Buscar por matricula
+        case 5: //Buscar por matricula, podendo ser sequencial ou binária
             cout << endl;
             cout<<"Digite o ID do Pet que deseja procurar: ";
             cin>>matricula;
-            aux = pesquisarMatricula(&lista, matricula);
-            if (aux){ //Se aux tiver algo
-                imprimir(aux);
+            if(estaOrdenado(&lista)==true){
+                aux = buscabinariaMatricula(&lista, matricula);
+                if(aux){ //Se aux tiver algo
+                    imprimir(aux);
+                }
+                else{
+                    cout << "Pet não encontrado" <<endl;
+                }
             }
-             else {
-                cout << "Pet não encontrado" <<endl;
+            else{
+                aux = pesquisarMatricula(&lista, matricula);
+                if (aux){ //Se aux tiver algo
+                    imprimir(aux);
+                }
+                else {
+                    cout << "Pet não encontrado" <<endl;
+                }
             }
             limparConsole();
             break;
@@ -121,35 +131,50 @@ int main(){
        
         case 7: //ordenação por BubbleSort
             system(OS);
-            if(lista.comeco!=nullptr)
-                bubbleSort(&lista);
-            else
-                cout<<"A lista está vazia!";
-            limparConsole();
+            cout<<endl<<"Selecione qual algoritmo de ordenação será utilizado:"<<endl<<endl;
+            cout<<"[1] Bubble Sort"<<endl<<"[2] Selection Sort"<<endl<<endl;
+            cin>>selec;
+            if(selec==1){
+                 if(lista.comeco!=nullptr)
+                    bubbleSort(&lista);
+                else
+                    cout<<"A lista está vazia!";
+                limparConsole();
+            }
+            else if(selec==2){
+                if(lista.comeco!=nullptr)
+                    selectionSort(&lista);
+                else
+                    cout<<"A lista está vazia!";
+                limparConsole();
+                break;
+            }
+            else{
+                cout<<"O número fornecido não é válido!";
+                limparConsole();
+            }
             break;
-        
-        case 8:
-            // ordernar2
-            break;
-        
-        case 9: // salvar no arquivo
+            
+        case 8: // salvar no arquivo
             salvarArquivo(&lista);
             break;
         
-        case 10: //limpar lista e arquivo
+        case 9: //limpar lista e arquivo
             char c;
             cout<<"Tem certeza que deseja limpar toda a base de dados (ação irreversível!)? (S/N): ";
             cin>>c;
             c=toupper(c);
             if (c=='S'&&lista.comeco!=nullptr)
                 limparLista(&lista);
+                salvarArquivo(&lista);
             limparConsole();
             break;
         
         default:
             cout << "Dígito Inválido!" <<endl;
+            limparConsole();
             break;
         }
 
-    } while(opcao != 9);
+    } while(opcao != 8);
 }

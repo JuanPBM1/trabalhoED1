@@ -43,9 +43,11 @@ int adicionarFinal(head* list, int matricula, string nomePet, string nomeDono, s
 
 void remover(head * list, int matricula);
 
-pet* pesquisarMatricula(head* list, int matricula);
+pet* pesquisarMatricula(head* list, int matricula); //busca sequencial (se a pessoa não ordenou a lista)
 
-pet* pesquisarDono(head * list, string nomeDono);
+pet* pesquisarDono(head * list, string nomeDono); //busca sequencial
+
+pet* buscabinariaMatricula(head* lista, int matricula); //busca binária (se a pessoa ordenou a lista)
 
 void limparLista(head *lista);
 
@@ -55,6 +57,12 @@ int matDisponivel(head *lista,int matricula);
 
 void trocarDados(pet *p1, pet *p2);
 
+void trocaNode(pet **cabeca, pet *node1, pet *node2);
+
+void selectionSort(head *cabeca);
+
 void bubbleSort(head *list);
 
 void alterar(pet *atual, int matricula, head lista);
+
+bool estaOrdenado(head *lista);

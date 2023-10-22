@@ -23,7 +23,6 @@ void adicionar(head* list, int matricula, string nomePet, string nomeDono, strin
     list->cont++;
 }
 
-
 int adicionarFinal(head* list, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade){
     pet *novo = new pet; 
     pet *aux;
@@ -116,7 +115,7 @@ void printarLista(head *lista){ //printa a lista inteira
     limparConsole();
 }
 
-pet* pesquisarMatricula(head* list, int matricula) {
+pet* pesquisarMatricula(head* list, int matricula) { //busca sequencial (se a pessoa não ordenou a lista)
     pet* aux = list->comeco;
 
     while (aux != nullptr && aux->matricula != matricula) {
@@ -130,7 +129,7 @@ pet* pesquisarMatricula(head* list, int matricula) {
     }
 }
 
-pet* pesquisarDono(head * list, string nomeDono){
+pet* pesquisarDono(head * list, string nomeDono){ //busca sequencial
     pet *aux = list->comeco;
 
     while (aux != nullptr && aux->nomeDono != nomeDono) {
@@ -142,6 +141,38 @@ pet* pesquisarDono(head * list, string nomeDono){
     } else {
         return nullptr; // Matrícula não encontrada, retorna nullptr
     }
+}
+
+pet* buscabinariaMatricula(head* lista, int matricula) { //busca binária (se a pessoa ordenou a lista)
+    pet* esquerda = lista->comeco;
+    pet* direita = nullptr;
+
+    while (esquerda != direita) { //so para quando todos os pets forem verificados
+
+        pet* meio = esquerda;
+        int cont = 0;
+
+        while (meio != direita) {
+            meio = meio->prox;
+            cont++; //contamos o numero de vezes que o ponteiro do inicio anda ate o final da lista(nao o nuemro de pet da lista)
+        }
+
+        meio = esquerda; //movemos de volta para o inicio
+        for (int i = 0; i < cont/2; i++) {
+            meio = meio->prox; //vai parar no pet do meio
+        }
+
+
+        if (meio->matricula == matricula) { //quando o do meio realmente e o que a gente quer
+            return meio;
+        } else if (meio->matricula < matricula) { //verificamos do inicio ate o meio
+            esquerda = meio->prox;
+        } else {
+            direita = meio; //verificamos do meio ate o final
+        }
+    }
+
+    return nullptr; // Não encontrado
 }
 
 void lerArquivo(head *list){ // Não coloquei um ponteiro da lista como argumento, pois quando usamos a funcao adicionar ja tera um ponteiro apotando para lista
@@ -252,6 +283,62 @@ void trocarDados(pet *p1, pet *p2){
     }
 }
 
+void trocaNode(pet **cabeca, pet *node1, pet *node2) {
+    if (node1 == node2 || node1 == nullptr || node2 == nullptr)
+        return;
+
+    pet *atual = *cabeca;
+    pet *anteriorN1 = nullptr;
+    pet *anteriorN2 = nullptr;
+
+    // Encontrar os nós anteriores a node1 e node2
+    while (atual != nullptr) {
+        if (atual->prox == node1)
+            anteriorN1 = atual;
+        if (atual->prox == node2)
+            anteriorN2 = atual;
+
+        atual = atual->prox;
+    }
+
+    // Caso node1 seja o nó inicial
+    if (anteriorN1 == nullptr)
+        *cabeca = node2;
+    else
+        anteriorN1->prox = node2;
+
+    // Caso node2 seja o nó inicial
+    if (anteriorN2 == nullptr)
+        *cabeca = node1;
+    else
+        anteriorN2->prox = node1;
+
+    // Trocar os ponteiros dos nós que foram trocados
+    pet *temp = node1->prox;
+    node1->prox = node2->prox;
+    node2->prox = temp;
+}
+
+void selectionSort(head *cabeca) {
+    pet *atual = cabeca->comeco;
+    
+    while (atual) { //atual demarca também o tamanho da lista "ordenada", já que estamos sempre procurando os menores valores, e quando achamos, trocamos ele com atual
+        pet *min = atual; 
+        pet *r = atual->prox; //r percorre a lista no loop interno buscando o mínimo, logo ele deve começar logo após a lista "ordenada", logo após de atual.
+
+        while (r) { //procurando o menor na lista ainda não ordenada para trocar com "atual"
+            if (min->matricula > r->matricula)
+                min = r;
+
+            r = r->prox;
+        }
+
+        trocaNode(&cabeca->comeco, atual, min);
+        atual = min->prox;
+    }
+    cout<<endl<<"A lista foi organizada em ordem crescente de ID utilizando o algoritmo Selection Sort com sucesso.";
+}
+
 void bubbleSort(head *list) {
     int tamanho = list->cont;
     bool ordenado = false;
@@ -269,7 +356,7 @@ void bubbleSort(head *list) {
                 primeiro = primeiro->prox;
             }
         }
-        cout<<endl<<"A lista foi organizada em ordem crescente de ID com sucesso.";
+        cout<<endl<<"A lista foi organizada em ordem crescente de ID utilizando o algoritmo Bubble Sort com sucesso.";
     } else {
         cout << endl << "A lista está vazia!" << endl;
     }
@@ -357,4 +444,18 @@ void alterar(pet *atual, int matricula, head lista)
             break;
         }
     }
+}
+
+bool estaOrdenado(head *lista){
+    if(lista == nullptr || lista->comeco==nullptr || lista->comeco->prox==nullptr) //se não existe lista ou não existem nós ou só existe um elemento
+        return true;
+    
+    pet *primeiro = lista->comeco;
+    while(primeiro->prox != nullptr){
+
+        if(primeiro->prox < primeiro) //o único caso que é falso (a lista não está ordenada)
+            return false;
+        primeiro=primeiro->prox;
+    }
+    return true;
 }
