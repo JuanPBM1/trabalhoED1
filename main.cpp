@@ -16,7 +16,8 @@ int main(){
  
 
     do {
-        cout << "       Sistema Cadastral        " <<endl;
+        cout << "--------------------------------" <<endl;
+        cout << "  Sistema Cadastral para Pets!  " <<endl;
         cout << "--------------------------------" <<endl;
         cout << "[1] - Cadastrar Pet" <<endl;
         cout << "[2] - Alterar Cadastro" <<endl;
@@ -76,9 +77,10 @@ int main(){
         case 3: // Excluir com base na matricula
             cout << endl<< "Digite o ID do Pet em que deseja Excluir Cadastro: " <<endl;
             cin >> matricula;
-            if(pesquisarMatricula(&lista,matricula)!=nullptr)
+            if(pesquisarMatricula(&lista,matricula)!=nullptr){
                 remover(&lista, matricula);
-            else{
+                salvarArquivo(&lista);
+            }else{
                 cout<<"A matrícula informada não consta na lista!";
             }
             limparConsole();

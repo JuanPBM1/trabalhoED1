@@ -68,7 +68,7 @@ void remover(head * list, int matricula){
         cout<< "Não há Pets para excluir!";
     }
     else{
-        while(primeiro != nullptr && primeiro->prox != nullptr && primeiro->prox->matricula==matricula){ // Excluir pets ao longo da lista
+        while(primeiro != nullptr && primeiro->prox != nullptr && primeiro->prox->matricula!=matricula){ // Excluir pets ao longo da lista
             primeiro = primeiro -> prox; // busca sequencial
         }
         if(primeiro != nullptr && primeiro->prox != nullptr){ // Testa se tem mais de 1 pet na lista
