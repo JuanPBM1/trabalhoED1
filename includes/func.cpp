@@ -1,12 +1,12 @@
 #include "func.h"
 
-const char *returnOS() { 
-    #ifdef _WIN32 
-         return "cls";  
-     #else 
-         return "clear"; 
-     #endif 
- } 
+const char *returnOS() {
+    #ifdef _WIN32
+         return "cls";
+     #else
+         return "clear";
+     #endif
+ }
 
 void adicionar(head* list, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade) {
     pet* novo = new pet;
@@ -24,7 +24,7 @@ void adicionar(head* list, int matricula, string nomePet, string nomeDono, strin
 }
 
 int adicionarFinal(head* list, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade){
-    pet *novo = new pet; 
+    pet *novo = new pet;
     pet *aux;
     novo->matricula = matricula;
     novo->nomePet = nomePet;
@@ -33,7 +33,7 @@ int adicionarFinal(head* list, int matricula, string nomePet, string nomeDono, s
     novo->sexo = sexo;
     novo->idade = idade;
     novo->prox = nullptr;
-    
+
     if(list->comeco==nullptr)
         list->comeco = novo;
     else{
@@ -76,7 +76,7 @@ void remover(head * list, int matricula){
             primeiro -> prox = aux->prox; //Faz a costura da lista, ex: se vamos excluir 2º pet em uma lista com 3 pets, o 3º Pet passara a ser o segundo
         }
     }
-    
+
     if(aux){ //Se aux não é nulo
         delete aux;
         list->cont--;
@@ -95,7 +95,18 @@ void imprimir(pet *elemento){ //padronização das saídas
     cout<<"Idade (em meses): "<< elemento->idade << endl;
     cout<<"------------------------------"<< endl;
 }
-
+void imprimirComPosicao(pet *elemento, int posicao){ //padronização das saídas
+    cout<<"----------Pet "<<elemento->matricula<<"----------"<<endl;
+    cout<<"------------------------------"<<endl;
+    cout<<"ID: "<< elemento->matricula << endl;
+    cout<<"Nome do Pet: "<< elemento->nomePet << endl;
+    cout<<"Dono: "<< elemento->nomeDono << endl;
+    cout<<"Tipo: "<< elemento->tipo << endl;
+    cout<<"Sexo do Pet: "<< elemento->sexo << endl;
+    cout<<"Idade (em meses): "<< elemento->idade << endl;
+    cout<<"Posição do elemento na lista: "<< posicao << endl;
+    cout<<"------------------------------"<< endl;
+}
 void limparConsole(){
     const char *OS = returnOS();
     string confirm;
@@ -121,7 +132,7 @@ pet* pesquisarMatricula(head* list, int matricula) { //busca sequencial (se a pe
     while (aux != nullptr && aux->matricula != matricula) {
         aux = aux->prox;
     }
-    
+
     if (aux != nullptr && aux->matricula == matricula) {
         return aux; // Matrícula encontrada, retorna o ponteiro para o pet
     } else {
@@ -129,13 +140,15 @@ pet* pesquisarMatricula(head* list, int matricula) { //busca sequencial (se a pe
     }
 }
 
-pet* pesquisarDono(head * list, string nomeDono){ //busca sequencial
+pet* pesquisarDono(head * list, string nomeDono, int &posicao){ //busca sequencial
     pet *aux = list->comeco;
-
+    int cont = 1;
     while (aux != nullptr && aux->nomeDono != nomeDono) {
         aux = aux->prox;
+        cont++;
     }
-    
+    posicao = cont;
+    cont = 1;
     if (aux != nullptr && aux->nomeDono == nomeDono) {
         return aux; // Matrícula encontrada, retorna o ponteiro para o pet
     } else {
@@ -204,13 +217,13 @@ void lerArquivo(head *list){ // Não coloquei um ponteiro da lista como argument
         } else {
             cerr << "Dados insuficientes na linha: " << linhaTexto << endl;
         }
-        vet.clear(); 
+        vet.clear();
 }
 }
 
 void salvarArquivo(head *list){
     pet *copia = list->comeco;
-    
+
     ofstream MyFile("pet_data.csv");
     if (!MyFile.is_open()) {
         cerr << "Erro ao abrir o arquivo." << endl;
@@ -234,7 +247,7 @@ void limparLista(head *lista){
         primeiro = primeiro->prox;
         delete(aux);
     }
-    lista->comeco = nullptr; 
+    lista->comeco = nullptr;
     lista->cont = 0;
 }
 
@@ -251,12 +264,12 @@ int matDisponivel(head *lista,int matricula){
         return 0; //Quando não acha uma matrícula igual
     else
         return 1; //Quando acha uma matrícula igual
-    
+
 }
 
 void trocarDados(pet *p1, pet *p2){
     if(p1 != nullptr && p2 != nullptr){
-    
+
     int matricula=p1->matricula;
     string nomePet=p1->nomePet;
     string nomeDono=p1->nomeDono;
@@ -321,9 +334,9 @@ void trocaNode(pet **cabeca, pet *node1, pet *node2) {
 
 void selectionSort(head *cabeca) {
     pet *atual = cabeca->comeco;
-    
+
     while (atual) { //atual demarca também o tamanho da lista "ordenada", já que estamos sempre procurando os menores valores, e quando achamos, trocamos ele com atual
-        pet *min = atual; 
+        pet *min = atual;
         pet *r = atual->prox; //r percorre a lista no loop interno buscando o mínimo, logo ele deve começar logo após a lista "ordenada", logo após de atual.
 
         while (r) { //procurando o menor na lista ainda não ordenada para trocar com "atual"
@@ -393,7 +406,7 @@ void alterar(pet *atual, int matricula, head lista)
                     cout<<"Essa matrícula já está em uso, digite outra!"<<endl<<endl;
                     limparConsole();
                 }
-                
+
             }
             while(matDisponivel(&lista,matricula2)==1);
             atual->matricula =  matricula2;
@@ -449,7 +462,7 @@ void alterar(pet *atual, int matricula, head lista)
 bool estaOrdenado(head *lista){
     if(lista == nullptr || lista->comeco==nullptr || lista->comeco->prox==nullptr) //se não existe lista ou não existem nós ou só existe um elemento
         return true;
-    
+
     pet *primeiro = lista->comeco;
     while(primeiro->prox != nullptr){
 
