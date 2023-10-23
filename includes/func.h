@@ -25,11 +25,13 @@ struct head{
     pet* comeco;
 };
 
+void imprimirComPosicao(pet *elemento, int posicao);
+
 void imprimir(pet *elemento);
 
 void limparConsole();
 
-void printarLista(head *lista); 
+void printarLista(head *lista);
 
 void alterar(pet *atual, int matricula, string nomePet, string nomeDono, string tipo, string sexo, int idade);
 
@@ -45,9 +47,9 @@ void remover(head * list, int matricula);
 
 pet* pesquisarMatricula(head* list, int matricula); //busca sequencial (se a pessoa não ordenou a lista)
 
-pet* pesquisarDono(head * list, string nomeDono); //busca sequencial
+pet* pesquisarDono(head * list, string nomeDono, int &posicao); //busca sequencial
 
-pet* buscabinariaMatricula(head* lista, int matricula); //busca binária (se a pessoa ordenou a lista)
+pet* buscabinariaMatricula(head * lista, int matricula); //busca binária (se a pessoa ordenou a lista)
 
 void limparLista(head *lista);
 
