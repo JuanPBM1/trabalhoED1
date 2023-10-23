@@ -1,19 +1,21 @@
 #include <iostream>
-#include "includes/func.h"
+#include "func.h"
 
 int main(){
+    setlocale(LC_ALL, "portuguese");
+
     head lista;
     lista.comeco=nullptr;
     lista.cont=0;
 
     lerArquivo(&lista);
-    int opcao, selec;
+    int opcao, selec, posicao;
     pet *aux;
     const char *OS = returnOS();
 
     int matricula, idade;
     string nomePet, nomeDono, tipo, sexo;
- 
+
 
     do {
         cout << "--------------------------------" <<endl;
@@ -28,7 +30,7 @@ int main(){
         cout << "[7] - Ordernar" <<endl;
         cout << "[8] - Salvar e sair" <<endl;
         cout << "[9] - Formatar Sistema Cadastral" <<endl;
-        
+
         cout << "Digite uma opção: ";
         cin >> opcao;
         system(OS);
@@ -43,7 +45,7 @@ int main(){
                     limparConsole();
                     cout<<"Digite o novo ID do Pet: ";}
             }while(matDisponivel(&lista,matricula)==1);
-            
+
             getline(cin,nomePet); //getline para evitar estouro de buffer
             cout << endl<< "Digite o nome do Pet: ";
             getline(cin,nomePet);
@@ -60,7 +62,7 @@ int main(){
             cout<<endl<<endl<<"O Pet foi cadastrado com sucesso!";
             limparConsole();
             break;
-       
+
         case 2: // Alterar Cadastro com base na matricula
             cout << endl<< "Digite o ID do Pet que terá o cadastro alterado: " <<endl;
             cin >> matricula;
@@ -73,7 +75,7 @@ int main(){
 
         limparConsole();
         break;
-       
+
         case 3: // Excluir com base na matricula
             cout << endl<< "Digite o ID do Pet em que deseja Excluir Cadastro: " <<endl;
             cin >> matricula;
@@ -85,12 +87,12 @@ int main(){
             }
             limparConsole();
             break;
-        
-        case 4: // Imprimir Listagem 
+
+        case 4: // Imprimir Listagem
             cout << endl;
             printarLista(&lista);
             break;
-        
+
         case 5: //Buscar por matricula, podendo ser sequencial ou binária
             cout << endl;
             cout<<"Digite o ID do Pet que deseja procurar: ";
@@ -121,16 +123,17 @@ int main(){
             cout<<"Digite o nome do dono do pet que deseja procurar: ";
             getline(cin,nomeDono); //getline para evitar o estouro de buffer (entrada do tipo int indo para tipo string)
             getline(cin,nomeDono);
-            aux = pesquisarDono(&lista, cxAlta(nomeDono));
+            aux = pesquisarDono(&lista, cxAlta(nomeDono), posicao);
             if (aux){
-                imprimir(aux);
+                imprimirComPosicao(aux, posicao);
+
             }
              else {
                 cout << "Pet não encontrado!" <<endl;
             }
             limparConsole();
             break;
-       
+
         case 7: //ordenação por BubbleSort
             system(OS);
             cout<<endl<<"Selecione qual algoritmo de ordenação será utilizado:"<<endl<<endl;
@@ -156,11 +159,11 @@ int main(){
                 limparConsole();
             }
             break;
-            
+
         case 8: // salvar no arquivo
             salvarArquivo(&lista);
             break;
-        
+
         case 9: //limpar lista e arquivo
             char c;
             cout<<"Tem certeza que deseja limpar toda a base de dados (ação irreversível!)? (S/N): ";
@@ -171,7 +174,7 @@ int main(){
                 salvarArquivo(&lista);
             limparConsole();
             break;
-        
+
         default:
             cout << "Dígito Inválido!" <<endl;
             limparConsole();
